@@ -46,3 +46,4 @@
 /Users/edwinrolandotumax/Documents/2026/net/backend/prod/WorkerOrdersManagement/obj/Debug/net9.0/WorkerOrdersManagement.pdb
 /Users/edwinrolandotumax/Documents/2026/net/backend/prod/WorkerOrdersManagement/obj/Debug/net9.0/WorkerOrdersManagement.genruntimeconfig.cache
 /Users/edwinrolandotumax/Documents/2026/net/backend/prod/WorkerOrdersManagement/obj/Debug/net9.0/ref/WorkerOrdersManagement.dll
+/Users/edwinrolandotumax/Documents/2026/net/backend/prod/WorkerOrdersManagement/obj/Debug/net9.0/WorkerOrdersManagement.sourcelink.json

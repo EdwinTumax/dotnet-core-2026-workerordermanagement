@@ -7,14 +7,14 @@ namespace WorkerOrdersManagement.Domain.Entities
 {
     public class Aspirante
     {
-        public string Apellidos;
-        public string Nombres;
-        public string Direccion;
-        public string Telefono;
-        public string Email;
-        public string ExamenId;
-        public string CarreraId;
-        public string JornadaId;
+        public string Apellidos {get;set;}
+        public string Nombres {get;set;}
+        public string Direccion {get;set;}
+        public string Telefono {get;set;}
+        public string Email {get;set;}
+        public string ExamenId {get;set;}
+        public string CarreraId {get;set;}
+        public string JornadaId {get;set;}
 
     }
 }

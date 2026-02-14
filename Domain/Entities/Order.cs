@@ -2,28 +2,88 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkerOrdersManagement.Domain.Enums;
 
 namespace WorkerOrdersManagement.Domain.Entities
 {
     public class Order
     {
-        #region "Propiedad"
-        public string OrderId; 
-        public string EntityType;
-        public string OperationType;
-        public string Status;
-        public Aspirante Data;
+        // GET / SET -> Encapsulamiento
+        #region "Campos"
+        private readonly string _OrderId = Guid.NewGuid().ToString();
+        private EntityType _EntityType;
+        private OperationType _OperationType;
+        private OrderStatus _Status;
+        private Aspirante _Aspirante;
         #endregion
+
+        #region "Propiedades"
+        public string OrderId
+        {
+            get
+            {
+                return _OrderId;
+            }          
+        }
+        public EntityType EntityType
+        {
+            get
+            {
+                return _EntityType;
+            }
+            set
+            {
+                _EntityType = value;
+            }
+        }
+
+        public OperationType OperationType
+        {
+            get
+            {
+                return _OperationType;
+            }
+            set
+            {
+                _OperationType = value;
+            }
+        }
+
+        public OrderStatus Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                _Status = value;
+            }
+        }
+
+        public Aspirante Aspirante
+        {
+            get
+            {
+                return _Aspirante;
+            }
+            set
+            {
+                _Aspirante = value;
+            }
+        }
+        #endregion
+
 
         #region "Acciones"
         public void MarkAsProcessed()
         {
-            this.Status = "Processed";
+            this.Status = OrderStatus.PROCESSED;
         }
 
         public void MarkAsFailed()
         {
-            this.Status = "Failed";
+            this.Status = OrderStatus.FAILED;
         }
         #endregion
 
