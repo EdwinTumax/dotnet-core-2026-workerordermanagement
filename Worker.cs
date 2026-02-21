@@ -20,22 +20,21 @@ public class Worker : BackgroundService
             if (_logger.IsEnabled(LogLevel.Information))
             {
 
-                Order orderProcessOne = new Order();                            
-                orderProcessOne.EntityType = EntityType.CANDIDATE;
+                Order orderProcessOne = new Order();     
+                orderProcessOne.EntityType = EntityType.APPLICANT;
                 orderProcessOne.OperationType = OperationType.CREATE;
                 orderProcessOne.Status = OrderStatus.PENDING;
-                
-                Applicant applicant = new();
+                orderProcessOne.EntityData = new Applicant("Tumax","Edwin","Guatemala, Guatemala","24711529","edwintumax@gmail.com","1","2","3");
 
+                Order orderProcessTow = new Order();     
+                orderProcessTow.EntityType = EntityType.STUDENT;
+                orderProcessTow.OperationType = OperationType.CREATE;
+                orderProcessTow.Status = OrderStatus.PENDING;
+                orderProcessTow.EntityData = new Student("Aguilar","Raul","Guatemala, Mixco","33124569","raulaguilar@gmail.com",Guid.NewGuid().ToString());
 
-                /*orderProcessOne.Aspirante = new Aspirante();
-                orderProcessOne.Aspirante.Apellidos = "Tumax";
-                orderProcessOne.Aspirante.Nombres = "Edwin";
-                orderProcessOne.Aspirante.Direccion = "Guatemala, Guatemala";
-                orderProcessOne.Aspirante.Email = "edwintumax@gmail.com";
-                orderProcessOne.Aspirante.ExamenId = "1";
-                orderProcessOne.Aspirante.JornadaId = "2";
-                orderProcessOne.Aspirante.CarreraId = "3";*/
+                Console.WriteLine(orderProcessOne.OrderId);
+                Console.WriteLine(orderProcessTow.OrderId);
+
 
                 _logger.LogInformation("Worker running Object one: {0}", JsonSerializer.Serialize(orderProcessOne));
             }

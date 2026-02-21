@@ -2,7 +2,7 @@ namespace WorkerOrdersManagement.Domain.Enums
 {
     public enum EntityType
     {
-        CANDIDATE,
+        APPLICANT,
         STUDENT
     }
 }

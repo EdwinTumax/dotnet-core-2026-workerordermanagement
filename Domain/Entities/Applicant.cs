@@ -8,13 +8,23 @@ namespace WorkerOrdersManagement.Domain.Entities
     public class Applicant : EntityData
     {
         public string ShiftId {get;set;}
-        public string ExamenId {get;set;}
-        public string CarreraId {get;set;}
-        public string JornadaId {get;set;}
-
+        public string ExamId {get;set;}
+        public string CareerId {get;set;}
         public override string showId()
         {
             return  $"El número de expediente generado es {ShiftId}";
+        }
+        
+        public Applicant() : base()
+        {
+            
+        }
+
+        public Applicant(string lastName, string firsName, string address, string phone, string email, string shiftId, string examId, string careerId) : base(lastName, firsName,address,phone, email)
+        {
+            this.ShiftId = shiftId;
+            this.ExamId = examId;
+            this.CareerId = careerId;
         }
     }
 }
