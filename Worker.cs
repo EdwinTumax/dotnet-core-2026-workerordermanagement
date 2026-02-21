@@ -19,18 +19,23 @@ public class Worker : BackgroundService
         {
             if (_logger.IsEnabled(LogLevel.Information))
             {
+
                 Order orderProcessOne = new Order();                            
                 orderProcessOne.EntityType = EntityType.CANDIDATE;
                 orderProcessOne.OperationType = OperationType.CREATE;
                 orderProcessOne.Status = OrderStatus.PENDING;
-                orderProcessOne.Aspirante = new Aspirante();
+                
+                Applicant applicant = new();
+
+
+                /*orderProcessOne.Aspirante = new Aspirante();
                 orderProcessOne.Aspirante.Apellidos = "Tumax";
                 orderProcessOne.Aspirante.Nombres = "Edwin";
                 orderProcessOne.Aspirante.Direccion = "Guatemala, Guatemala";
                 orderProcessOne.Aspirante.Email = "edwintumax@gmail.com";
                 orderProcessOne.Aspirante.ExamenId = "1";
                 orderProcessOne.Aspirante.JornadaId = "2";
-                orderProcessOne.Aspirante.CarreraId = "3";
+                orderProcessOne.Aspirante.CarreraId = "3";*/
 
                 _logger.LogInformation("Worker running Object one: {0}", JsonSerializer.Serialize(orderProcessOne));
             }

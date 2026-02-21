@@ -14,7 +14,7 @@ namespace WorkerOrdersManagement.Domain.Entities
         private EntityType _EntityType;
         private OperationType _OperationType;
         private OrderStatus _Status;
-        private Aspirante _Aspirante;
+        private Applicant _Applicant;
         #endregion
 
         #region "Propiedades"
@@ -61,15 +61,15 @@ namespace WorkerOrdersManagement.Domain.Entities
             }
         }
 
-        public Aspirante Aspirante
+        public Applicant Aspirante
         {
             get
             {
-                return _Aspirante;
+                return _Applicant;
             }
             set
             {
-                _Aspirante = value;
+                _Applicant = value;
             }
         }
         #endregion
