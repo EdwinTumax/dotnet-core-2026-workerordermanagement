@@ -1,4 +1,7 @@
+using System.Text;
 using System.Text.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using WorkerOrdersManagement.Domain.Entities;
 using WorkerOrdersManagement.Domain.Enums;
 
@@ -7,6 +10,7 @@ namespace WorkerOrdersManagement;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private IChannel channel;
 
     public Worker(ILogger<Worker> logger)
     {
@@ -15,7 +19,31 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.Port = 5672;
+        connectionFactory.HostName = "localhost";
+        connectionFactory.UserName = "guest";
+        connectionFactory.Password = "guest";
+        try
+        {
+            IConnection connection = await connectionFactory.CreateConnectionAsync();
+            this.channel = await connection.CreateChannelAsync();
+            var consumer = new AsyncEventingBasicConsumer(this.channel);
+            consumer.ReceivedAsync += ConsumerMessageReceivedEvent;
+            
+            await this.channel.BasicConsumeAsync(
+                queue: "kalum.dev.net.2026.queue",
+                autoAck: false,
+                consumer: consumer
+            );
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error");
+            Console.WriteLine(ex.Message);
+        }
+
+        /*while (!stoppingToken.IsCancellationRequested)
         {
             if (_logger.IsEnabled(LogLevel.Information))
             {
@@ -39,6 +67,13 @@ public class Worker : BackgroundService
                 _logger.LogInformation("Worker running Object one: {0}", JsonSerializer.Serialize(orderProcessOne));
             }
             await Task.Delay(1000, stoppingToken);
-        }
+        }*/
+    }
+
+    private async Task ConsumerMessageReceivedEvent(object sender, BasicDeliverEventArgs e)
+    {
+        string message = Encoding.UTF8.GetString(e.Body.ToArray());
+        Console.WriteLine($"Mensaje recibido: {message}");
+        await this.channel.BasicAckAsync(e.DeliveryTag, false);
     }
 }

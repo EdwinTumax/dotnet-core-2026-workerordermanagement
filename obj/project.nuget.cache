@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KO69qt+AaBA=",
+  "dgSpecHash": "Brd7IMEVWvg=",
   "success": true,
   "projectFilePath": "/Users/edwinrolandotumax/Documents/2026/net/backend/prod/WorkerOrdersManagement/WorkerOrdersManagement.csproj",
   "expectedPackageFiles": [
@@ -31,14 +31,10 @@
     "/Users/edwinrolandotumax/.nuget/packages/microsoft.extensions.options/9.0.2/microsoft.extensions.options.9.0.2.nupkg.sha512",
     "/Users/edwinrolandotumax/.nuget/packages/microsoft.extensions.options.configurationextensions/9.0.2/microsoft.extensions.options.configurationextensions.9.0.2.nupkg.sha512",
     "/Users/edwinrolandotumax/.nuget/packages/microsoft.extensions.primitives/9.0.2/microsoft.extensions.primitives.9.0.2.nupkg.sha512",
-    "/Users/edwinrolandotumax/.nuget/packages/system.diagnostics.eventlog/9.0.2/system.diagnostics.eventlog.9.0.2.nupkg.sha512"
+    "/Users/edwinrolandotumax/.nuget/packages/rabbitmq.client/7.2.1/rabbitmq.client.7.2.1.nupkg.sha512",
+    "/Users/edwinrolandotumax/.nuget/packages/system.diagnostics.eventlog/9.0.2/system.diagnostics.eventlog.9.0.2.nupkg.sha512",
+    "/Users/edwinrolandotumax/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
+    "/Users/edwinrolandotumax/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error al obtener los datos de vulnerabilidad del paquete: Access to the path '/Users/edwinrolandotumax/.local/share/NuGet/http-cache/670c1461c29885f9aa22c281d8b7da90845b38e4$ps:_api.nuget.org_v3_index.json/vuln_index.dat-new' is denied."
-    }
-  ]
+  "logs": []
 }
