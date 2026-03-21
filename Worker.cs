@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using WorkerOrdersManagement.Domain.Entities;
@@ -10,29 +11,31 @@ namespace WorkerOrdersManagement;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private readonly IConfiguration _configuration;
     private IChannel channel;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.Port = 5672;
-        connectionFactory.HostName = "localhost";
-        connectionFactory.UserName = "guest";
-        connectionFactory.Password = "guest";
+        connectionFactory.Port = _configuration.GetValue<int>("RabbitBrokerConfiguration:Port");
+        connectionFactory.HostName = _configuration.GetValue<string>("RabbitBrokerConfiguration:HostName");
+        connectionFactory.UserName = _configuration.GetValue<string>("RabbitBrokerConfiguration:UserName");
+        connectionFactory.Password = _configuration.GetValue<string>("RabbitBrokerConfiguration:Password");
         try
         {
             IConnection connection = await connectionFactory.CreateConnectionAsync();
             this.channel = await connection.CreateChannelAsync();
             var consumer = new AsyncEventingBasicConsumer(this.channel);
             consumer.ReceivedAsync += ConsumerMessageReceivedEvent;
-            
+
             await this.channel.BasicConsumeAsync(
-                queue: "kalum.dev.net.2026.queue",
+                queue: _configuration.GetValue<string>("RabbitBrokerConfiguration:Queue"),
                 autoAck: false,
                 consumer: consumer
             );
@@ -43,37 +46,36 @@ public class Worker : BackgroundService
             Console.WriteLine(ex.Message);
         }
 
-        /*while (!stoppingToken.IsCancellationRequested)
-        {
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-
-                Order orderProcessOne = new Order();     
-                orderProcessOne.EntityType = EntityType.APPLICANT;
-                orderProcessOne.OperationType = OperationType.CREATE;
-                orderProcessOne.Status = OrderStatus.PENDING;
-                orderProcessOne.EntityData = new Applicant("Tumax","Edwin","Guatemala, Guatemala","24711529","edwintumax@gmail.com","1","2","3");
-
-                Order orderProcessTow = new Order();     
-                orderProcessTow.EntityType = EntityType.STUDENT;
-                orderProcessTow.OperationType = OperationType.CREATE;
-                orderProcessTow.Status = OrderStatus.PENDING;
-                orderProcessTow.EntityData = new Student("Aguilar","Raul","Guatemala, Mixco","33124569","raulaguilar@gmail.com",Guid.NewGuid().ToString());
-
-                Console.WriteLine(orderProcessOne.OrderId);
-                Console.WriteLine(orderProcessTow.OrderId);
-
-
-                _logger.LogInformation("Worker running Object one: {0}", JsonSerializer.Serialize(orderProcessOne));
-            }
-            await Task.Delay(1000, stoppingToken);
-        }*/
     }
 
     private async Task ConsumerMessageReceivedEvent(object sender, BasicDeliverEventArgs e)
     {
-        string message = Encoding.UTF8.GetString(e.Body.ToArray());
-        Console.WriteLine($"Mensaje recibido: {message}");
-        await this.channel.BasicAckAsync(e.DeliveryTag, false);
+        try
+        {
+            string message = Encoding.UTF8.GetString(e.Body.ToArray());
+            Order order = JsonSerializer.Deserialize<Order>(message);
+            await this.channel.BasicAckAsync(e.DeliveryTag, false);
+            await sendOrder(order);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
+
+    private async Task sendOrder(Order order)
+    {
+        HttpClient client = new HttpClient();
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Converters = {new JsonStringEnumConverter()}
+        };
+        StringContent content = new StringContent(JsonSerializer.Serialize(order, options));
+        var response = await client.PostAsync(_configuration.GetValue<string>("HttpClientOrderConfiguration:url"),content);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(response.StatusCode);
+        Console.WriteLine(responseBody);
+    }
+
 }

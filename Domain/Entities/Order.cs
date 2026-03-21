@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WorkerOrdersManagement.Domain.Enums;
 
@@ -14,7 +15,7 @@ namespace WorkerOrdersManagement.Domain.Entities
         private EntityType _EntityType;
         private OperationType _OperationType;
         private OrderStatus _Status;
-        private EntityData _EntityData;
+        private Applicant _EntityData;
         #endregion
 
         #region "Propiedades"
@@ -24,7 +25,8 @@ namespace WorkerOrdersManagement.Domain.Entities
             {
                 return _OrderId;
             }          
-        }
+        }        
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public EntityType EntityType
         {
             get
@@ -37,6 +39,7 @@ namespace WorkerOrdersManagement.Domain.Entities
             }
         }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public OperationType OperationType
         {
             get
@@ -49,6 +52,7 @@ namespace WorkerOrdersManagement.Domain.Entities
             }
         }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public OrderStatus Status
         {
             get
@@ -61,7 +65,8 @@ namespace WorkerOrdersManagement.Domain.Entities
             }
         }
 
-        public EntityData EntityData
+        [JsonPropertyName("data")]
+        public Applicant EntityData
         {
             get
             {
@@ -73,7 +78,6 @@ namespace WorkerOrdersManagement.Domain.Entities
             }
         }
         #endregion
-
 
         #region "Acciones"
         public void MarkAsProcessed()
